@@ -15,8 +15,7 @@ ENV/
 .venv/
 .env/
 newenv/
-env019/
-.env019
+env024
 
 # Ignorar archivos de configuración de IDEs
 .idea/
