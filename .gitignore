@@ -1,0 +1,79 @@
+#Prueba
+# Ignorar archivos CSV
+*.csv
+
+# Ignorar archivos de caché
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar entornos virtuales
+venv/
+env/
+ENV/
+.venv/
+.env/
+newenv/
+env024
+tf_env
+
+# Ignorar archivos de configuración de IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Ignorar archivos de requisitos
+requirements.txt
+
+# Ignorar archivos de logs
+*.log
+
+# Ignorar archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de datos temporales
+*.tmp
+*.temp
+
+# Ignorar archivos de configuración de Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Ignorar archivos de notebooks de Jupyter
+.ipynb_checkpoints/
+
+# Ignorar archivos de configuración de pytest
+.cache/
+.pytest_cache/
+
+# Ignorar archivos de configuración de coverage
+.coverage
+*.cover
+
+# Ignorar archivos de documentación de Sphinx
+docs/_build/
+
+# Ignorar archivos de configuración de otros sistemas
+*.swp
+*.swo
+
+# Ignorar archivos .pickle
+*.pickle
+*.pkl
+
+# Ignorar archivos .html
+*.html
+
+# Ignorar archivos txt
+*.txt
+
+*.csv
+
+.env
+
+*.jpg
