@@ -47,6 +47,7 @@ vision_grecia_nat/
 
 ## Bibliotecas Clave Utilizadas
 
+
 | Biblioteca              | Descripción                                                                                  | Símbolo         |
 |-------------------------|----------------------------------------------------------------------------------------------|-----------------|
 | **`numpy`**             | Biblioteca para cálculo numérico y operaciones con arreglos multidimensionales.             | 🔢             |
@@ -59,3 +60,24 @@ vision_grecia_nat/
 | **`fastapi`**           | Framework moderno y rápido para construir APIs.                                              | 🚀             |
 | **`spacy`**             | Procesamiento de lenguaje natural avanzado.                                                 | 🧠             |
 | **`transformers`**      | Herramientas para modelos de lenguaje natural como BERT y GPT.                               | 🗣️             |
+
+
+
+
+## Instrucciones para Ejecutar la Aplicación
+
+Sigue estos pasos para iniciar la aplicación y probar sus funcionalidades:
+
+### Requisitos Previos
+1. **Instala las Dependencias:**
+   Asegúrate de haber instalado todas las librerías necesarias. Si no lo has hecho, ejecuta:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+###
+2. **Ejecuta la Aplicación: Utiliza el siguiente comando para iniciar el programa:**
+  ```
+  python main.py
+  ```
+
