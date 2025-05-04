@@ -224,9 +224,9 @@ def capture_employee_photos(name, camera_id, frame_width, frame_height, employee
     
     return photos_taken > 0
 
-def recognize_faces(frame, known_face_encodings, known_face_names, tolerance=0.45, resize_factor=0.25):
+def recognize_faces(frame, known_face_encodings, known_face_names, tolerance=0.45, resize_factor=0.25, access_logger=None, camera_id=0):
     """
-    Reconoce rostros en un frame
+    Reconoce rostros en un frame y registra los accesos
     
     Args:
         frame (numpy.ndarray): Frame de video a analizar
@@ -234,6 +234,8 @@ def recognize_faces(frame, known_face_encodings, known_face_names, tolerance=0.4
         known_face_names (list): Lista de nombres correspondientes a los encodings
         tolerance (float): Tolerancia para el reconocimiento facial (menor = más estricto)
         resize_factor (float): Factor para redimensionar el frame para procesamiento más rápido
+        access_logger (AccessLogger, optional): Logger para registrar accesos
+        camera_id (int): ID de la cámara utilizada
         
     Returns:
         list: Lista de tuplas (nombre, coordenadas, color, texto_acceso)
@@ -276,6 +278,7 @@ def recognize_faces(frame, known_face_encodings, known_face_names, tolerance=0.4
                 
                 name = "Desconocido"
                 confidence = 0.0
+                access_granted = False
                 
                 if True in matches:
                     # Calcular distancias faciales
@@ -287,14 +290,30 @@ def recognize_faces(frame, known_face_encodings, known_face_names, tolerance=0.4
                         confidence = 1.0 - face_distances[best_match_index]
                         if confidence >= (1.0 - tolerance):
                             name = known_face_names[best_match_index]
+                            access_granted = True
                 
                 # Configurar colores y mensaje de acceso
-                if name != "Desconocido":
+                if access_granted:
                     color = (0, 255, 0)  # Verde para acceso permitido
                     access_text = f"ACCESO PERMITIDO ({confidence:.2f})"
                 else:
                     color = (0, 0, 255)  # Rojo para acceso denegado
                     access_text = "ACCESO DENEGADO"
+                
+                # Registrar acceso si hay un logger disponible
+                if access_logger:
+                    # Solo registrar si la confianza es suficiente o si es un desconocido
+                    if access_granted or name == "Desconocido":
+                        extra_data = {
+                            'face_location': [top, right, bottom, left]
+                        }
+                        access_logger.log_access(
+                            name=name,
+                            access_granted=access_granted,
+                            confidence=confidence,
+                            camera_id=camera_id,
+                            extra_data=extra_data
+                        )
                 
                 results.append((name, (left, top, right, bottom), color, access_text))
     except Exception as e:
