@@ -98,3 +98,44 @@ def release_resources(cap=None):
         cap.release()
     cv2.destroyAllWindows()
     cv2.waitKey(1)  # Necesario para asegurar que las ventanas se cierren
+
+
+def handle_error(error, message=None, exit_code=None):
+    """
+    Maneja errores de forma centralizada
+    
+    Args:
+        error (Exception): La excepción capturada
+        message (str, optional): Mensaje personalizado para mostrar
+        exit_code (int, optional): Código de salida si se debe terminar el programa
+    """
+    error_msg = message if message else str(error)
+    logging.error(f"Error: {error_msg}")
+    logging.debug(f"Detalles del error: {error}", exc_info=True)
+    
+    print(f"\n[ERROR] {error_msg}")
+    
+    if exit_code is not None:
+        sys.exit(exit_code)
+
+def validate_camera(camera_id):
+    """
+    Valida que la cámara esté disponible y funcionando
+    
+    Args:
+        camera_id (int): ID de la cámara a validar
+        
+    Returns:
+        bool: True si la cámara está disponible, False en caso contrario
+    """
+    try:
+        cap = cv2.VideoCapture(camera_id)
+        if not cap.isOpened():
+            return False
+        
+        ret, frame = cap.read()
+        cap.release()
+        
+        return ret and frame is not None
+    except Exception:
+        return False
