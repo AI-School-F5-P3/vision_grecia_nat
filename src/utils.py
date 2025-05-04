@@ -77,14 +77,33 @@ def ensure_dir_exists(directory):
         os.makedirs(directory)
         print(f"Directorio creado: {directory}")
 
-def get_timestamp():
+def format_timestamp(timestamp=None):
     """
-    Obtiene una marca de tiempo formateada
+    Formatea una marca de tiempo
     
+    Args:
+        timestamp (datetime, optional): Marca de tiempo a formatear. Si es None, se usa la hora actual.
+        
     Returns:
-        str: Marca de tiempo en formato YYYYMMDD_HHMMSS
+        str: Marca de tiempo formateada
     """
-    return datetime.now().strftime("%Y%m%d_%H%M%S")
+    if timestamp is None:
+        timestamp = datetime.now()
+    return timestamp.strftime("%Y-%m-%d %H:%M:%S")
+
+def calculate_confidence_from_distance(face_distance):
+    """
+    Calcula el nivel de confianza a partir de la distancia facial
+    
+    Args:
+        face_distance (float): Distancia facial
+        
+    Returns:
+        float: Nivel de confianza (0.0 - 1.0)
+    """
+    if face_distance > 0.6:
+        return 0.0
+    return 1.0 - face_distance
 
 def release_resources(cap=None):
     """
