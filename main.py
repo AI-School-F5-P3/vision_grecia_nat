@@ -2,16 +2,35 @@ import cv2
 import sys
 import os
 import time
+import argparse
 from src.config import Config
 from src.recognition import load_encodings, recognize_faces
 from src.utils import setup_signal_handler, draw_face_info, release_resources, validate_camera, setup_logging, handle_error
+from src.logger import AccessLogger
+
+def parse_arguments():
+    """Parsea los argumentos de línea de comandos"""
+    parser = argparse.ArgumentParser(description='Sistema de reconocimiento facial')
+    parser.add_argument('--no-log', action='store_true', help='Desactiva el registro de accesos')
+    parser.add_argument('--report', action='store_true', help='Genera un reporte de accesos al finalizar')
+    parser.add_argument('--report-format', choices=['csv', 'json'], default='csv', help='Formato del reporte')
+    return parser.parse_args()
 
 def main():
+    # Parsear argumentos
+    args = parse_arguments()
+    
     # Configurar logging
     log_dir = "logs"
     os.makedirs(log_dir, exist_ok=True)
     log_file = os.path.join(log_dir, f"vision_{time.strftime('%Y%m%d')}.log")
     logger = setup_logging(log_file)
+    
+    # Inicializar logger de accesos
+    access_logger = None
+    if not args.no_log:
+        access_logger = AccessLogger(log_dir=log_dir)
+        print(f"Registro de accesos activado. Logs en: {log_dir}")
     
     # Configurar manejador de señales
     setup_signal_handler()
@@ -90,7 +109,9 @@ def main():
                     frame, 
                     known_face_encodings, 
                     known_face_names, 
-                    tolerance=config.FACE_RECOGNITION_TOLERANCE
+                    tolerance=config.FACE_RECOGNITION_TOLERANCE,
+                    access_logger=access_logger,
+                    camera_id=config.CAMERA_ID
                 )
                 
                 # Dibujar información en el frame
@@ -114,6 +135,12 @@ def main():
         except Exception as e:
             handle_error(e, "Error durante la ejecución del programa")
         finally:
+            # Generar reporte si se solicitó
+            if args.report and access_logger:
+                report_path = access_logger.generate_report(format_type=args.report_format)
+                if report_path:
+                    print(f"Reporte generado: {report_path}")
+            
             # Liberar recursos
             release_resources(cap)
             
