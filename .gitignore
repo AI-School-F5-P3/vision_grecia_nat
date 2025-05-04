@@ -1,1 +1,5 @@
 empleados/
+venv/
+logs/
+encodings/
+__pycache__/
