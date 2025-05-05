@@ -1,83 +1,83 @@
-#
-# Face recognition app creada por el grupo vision_grecia_nat
+# Sistema de Reconocimiento Facial para Control de Acceso
 
-## Descripción
-Una aplicación de reconocimiento facial que utiliza procesamiento de imágenes y aprendizaje automático para identificar rostros en tiempo real. Este proyecto está diseñado para ser intuitivo y fácilmente integrable con otras soluciones.
+Este proyecto implementa un sistema de control de acceso mediante reconocimiento facial, diseñado para registrar y verificar el ingreso de empleados utilizando visión por computadora.
 
----
+## Propósito
+Automatizar el registro de entradas y salidas de empleados mediante reconocimiento facial, mejorando la seguridad y facilitando la gestión de accesos.
 
-## Características
-- **Interfaz Gráfica (GUI):** Interactúa fácilmente con la aplicación mediante una interfaz amigable.
-- **Reconocimiento Rápido:** Utiliza modelos eficientes para el reconocimiento facial.
-- **Almacenamiento de Codificaciones:** Las codificaciones de rostros se guardan en un archivo `encodings.pickle` para su reutilización.
-- **Configuración Personalizable:** Archivo `config.py` para ajustes específicos del usuario.
+## Requisitos
+- Python 3.8+
+- OpenCV
+- face_recognition
+- numpy
+- click
 
----
+Instala las dependencias ejecutando:
+```bash
+pip install -r requirements.txt
+```
 
 ## Estructura del Proyecto
-```plaintext
-vision_grecia_nat/
-│
-├── encodings/
-│   └── encodings.pickle       # Archivo con las codificaciones faciales
-│
-├── src/
-│   ├── config.py              # Archivo de configuración
-│   ├── gui.py                 # Código de la interfaz gráfica
-│   ├── __init__.py            # Inicialización del módulo
-│   └── __pycache__/           # Archivos cacheados de Python
-│
-├── .gitignore                 # Archivos ignorados por Git
-├── main.py                    # Punto de entrada principal de la aplicación
-├── README.md                  # Documentación del proyecto
-
 ```
----
-## Archivos Clave
----
+vision_grecia_nat/
+├── .gitignore           # Archivos y carpetas ignorados por Git
+├── README.md            # Documentación del proyecto
+├── data/                # Datos (imágenes de empleados, encodings)
+│   └── .gitkeep         # Marcador para mantener la carpeta en Git
+├── main.py              # Script principal para iniciar el sistema
+├── requirements.txt     # Dependencias de Python
+├── scripts/             # Scripts auxiliares
+│   ├── add_employee.py  # Script para registrar nuevos empleados
+│   └── view_logs.py     # Script para visualizar registros de acceso
+└── src/                 # Código fuente principal
+    ├── __init__.py      # Inicializador del paquete src
+    ├── config.py        # Configuraciones del sistema
+    ├── logger.py        # Módulo para registrar eventos
+    ├── recognition.py   # Lógica principal de reconocimiento facial
+    └── utils.py         # Funciones de utilidad
+```
 
-| Archivo                         | Descripción                                        |
-|---------------------------------|----------------------------------------------------|
-| **`main.py`**                   | Inicia la aplicación.                              |
-| **`encodings/encodings.pickle`**| Contiene las codificaciones faciales guardadas.    |
-| **`src/config.py`**             | Archivo de configuración con parámetros personalizables. |
-| **`src/gui.py`**                | Código para la interfaz gráfica.                  |
+## Uso Básico
+### 1. Registrar empleados
+Ejecuta el script correspondiente para capturar fotos de un nuevo empleado:
+```bash
+python scripts/add_employee.py --name "NombreEmpleado"
+```
+Sigue las instrucciones para capturar imágenes desde la cámara.
 
+### 2. Generar encodings faciales
+Esto se realiza automáticamente al registrar empleados, pero puedes forzarlo manualmente:
+```bash
+python scripts/generate_encodings.py
+```
 
+### 3. Iniciar el sistema de reconocimiento
+```bash
+python main.py
+```
+El sistema abrirá la cámara y mostrará los accesos permitidos o denegados en tiempo real.
 
-## Bibliotecas Clave Utilizadas
+### 4. Consultar registros de acceso
+Puedes visualizar y analizar los registros ejecutando:
+```bash
+python scripts/view_logs.py
+```
 
+## ¿Cómo funciona el reconocimiento facial?
+- El sistema utiliza la librería `face_recognition` para detectar y comparar rostros en tiempo real.
+- Los encodings faciales de los empleados se almacenan y se usan para verificar la identidad al momento del acceso.
+- Si el rostro coincide con un empleado registrado, el acceso es permitido y se registra el evento.
 
-| Biblioteca              | Descripción                                                                                  | Símbolo         |
-|-------------------------|----------------------------------------------------------------------------------------------|-----------------|
-| **`numpy`**             | Biblioteca para cálculo numérico y operaciones con arreglos multidimensionales.             | 🔢             |
-| **`pandas`**            | Herramienta para manipulación y análisis de datos estructurados.                            | 📊             |
-| **`tensorflow`**        | Framework para construir y entrenar modelos de aprendizaje automático y redes neuronales.    | 🤖             |
-| **`scikit-learn`**      | Biblioteca para aprendizaje automático y minería de datos.                                   | 📚             |
-| **`matplotlib`**        | Generación de gráficos en 2D para visualización de datos.                                    | 📈             |
-| **`seaborn`**           | Biblioteca basada en Matplotlib para crear gráficos estadísticos atractivos.                 | 🌊             |
-| **`flask`**             | Microframework para el desarrollo de aplicaciones web.                                       | 🌐             |
-| **`fastapi`**           | Framework moderno y rápido para construir APIs.                                              | 🚀             |
-| **`spacy`**             | Procesamiento de lenguaje natural avanzado.                                                 | 🧠             |
-| **`transformers`**      | Herramientas para modelos de lenguaje natural como BERT y GPT.                               | 🗣️             |
+## Registro y gestión de empleados
+- Las fotos de cada empleado se almacenan en la carpeta `data/empleados/`.
+- Cada vez que se agrega un empleado, se generan nuevos encodings para mejorar la precisión.
 
+## Consultar y exportar registros
+- Los accesos se registran en la carpeta `logs/`.
+- Puedes generar reportes en formato CSV o JSON usando la opción `--report` al ejecutar `main.py`.
 
+## Contribuciones
+¡Las contribuciones son bienvenidas! Por favor, abre un issue o pull request para sugerencias o mejoras.
 
-
-## Instrucciones para Ejecutar la Aplicación
-
-Sigue estos pasos para iniciar la aplicación y probar sus funcionalidades:
-
-### Requisitos Previos
-1. **Instala las Dependencias:**
-   Asegúrate de haber instalado todas las librerías necesarias. Si no lo has hecho, ejecuta:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-###
-2. **Ejecuta la Aplicación: Utiliza el siguiente comando para iniciar el programa:**
-  ```
-  python main.py
-  ```
-
+## Licencia
+Este proyecto es de uso académico y experimental.

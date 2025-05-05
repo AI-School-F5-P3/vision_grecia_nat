@@ -1,5 +1,5 @@
-empleados/
+data/empleados/
+data/encodings/
 venv/
 logs/
-encodings/
 __pycache__/
